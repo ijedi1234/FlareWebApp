@@ -5,12 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using FlareWebApp.Models;
 using FlareWebApp.FileLogic;
-//using System.Web.UI.WebControls;
 
 namespace FlareWebApp.Controllers {
     public class HomeController : Controller {
         public ActionResult Index() {
             HomePageModel model = new HomePageModel();
+            string savePath = HttpContext.Server.MapPath("~/SavedData");
+            model.AnalaysisStates = FileSaver.GetAnalysisStates(savePath);
             return View(model);
         }
 
@@ -28,9 +29,12 @@ namespace FlareWebApp.Controllers {
         [HttpPost]
         public ActionResult Submit(HomePageModel model) {
             string savePath = HttpContext.Server.MapPath("~/SavedData");
-            string filepathToRead = FileSaver.SaveFile(model.SomeFile, savePath);
-            WordFile fileWithWords = new WordFile(filepathToRead);
-            model.FreqWords = fileWithWords.GetMostFrequentWords();
+            string stopwordPath = HttpContext.Server.MapPath("~/FileLogic/StopWords");
+            FileSaver fileSaver = new FileSaver(model.SomeFile, savePath, model.IncludeStopwords);
+            string filePathOriginal = fileSaver.GetFilePathOriginal();
+            WordFile fileWithWords = new WordFile(filePathOriginal, stopwordPath, model.IncludeStopwords);
+            fileSaver.AppendPostProcessInfo(fileWithWords.GetMostFrequentWords(), model.IncludeStopwords);
+            model.AnalaysisStates = FileSaver.GetAnalysisStates(savePath);
             return View("Index", model);
         }
     }

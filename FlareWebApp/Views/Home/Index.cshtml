@@ -14,15 +14,54 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div>
         <h2>Etner your text file</h2>
         @using (Html.BeginForm("Submit", "Home", FormMethod.Post, new { encType = "multipart/form-data" })) {
-            
+            <p>Include Stopwords?</p>
+            @Html.RadioButtonFor(m => m.IncludeStopwords, true, new { id = "stopwords-yes" })
+            @Html.Label("stopwords-yes", "Yes")
+            @Html.RadioButtonFor(m => m.IncludeStopwords, false, new { id = "stopwords-no" })
+            @Html.Label("stopwords-no", "No")
             @Html.TextBoxFor(m => m.SomeFile, new { type = "file" })
             <input type="submit" value="Upload" name="UploadButton" id="UploadButton" />
         }
-        @foreach (LetterNode word in Model.FreqWords) {
-            <p>@word.GetNodeWord() @word.GetCount()</p>
-        }
+        <div>
+            <table border="1">
+                <tbody>
+                    @for (int analysisRow = 0; analysisRow < Model.AnalaysisStates.Count; analysisRow += 5) {
+                        <tr>
+                            @for (int analysisColumn = analysisRow; analysisColumn < analysisRow + 5 && analysisColumn < Model.AnalaysisStates.Count; analysisColumn++) {
+
+                                <td style="width:200px">
+                                    <div>
+                                        <table border="1" style="width:200px">
+                                            <caption>
+                                                @Model.AnalaysisStates[analysisColumn].GetUploadedFilename()
+                                                <br />
+                                                @Model.AnalaysisStates[analysisColumn].GetIncludeStopwords()
+                                            </caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>Word</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (LetterNode node in Model.AnalaysisStates[analysisColumn].GetResults()) {
+                                                    <tr>
+                                                        <td>@node.GetNodeWord()</td>
+                                                        <td>@node.GetCount()</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
