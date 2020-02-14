@@ -1,4 +1,5 @@
 ﻿@using FlareWebApp.Models
+@using FlareWebApp.FileLogic
 @model HomePageModel
 
 
@@ -20,8 +21,8 @@
             @Html.TextBoxFor(m => m.SomeFile, new { type = "file" })
             <input type="submit" value="Upload" name="UploadButton" id="UploadButton" />
         }
-        @foreach (string word in Model.FreqWords) {
-            <p>@word</p>
+        @foreach (LetterNode word in Model.FreqWords) {
+            <p>@word.GetNodeWord() @word.GetCount()</p>
         }
     </div>
 </div>

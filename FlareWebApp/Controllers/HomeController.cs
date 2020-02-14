@@ -22,16 +22,15 @@ namespace FlareWebApp.Controllers {
 
         public ActionResult Contact() {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         [HttpPost]
         public ActionResult Submit(HomePageModel model) {
             string savePath = HttpContext.Server.MapPath("~/SavedData");
-            FileSaver.SaveFile(model.SomeFile, savePath);
-            model.FreqWords = new List<string>();
-            model.FreqWords.Add("Example");
+            string filepathToRead = FileSaver.SaveFile(model.SomeFile, savePath);
+            WordFile fileWithWords = new WordFile(filepathToRead);
+            model.FreqWords = fileWithWords.GetMostFrequentWords();
             return View("Index", model);
         }
     }
