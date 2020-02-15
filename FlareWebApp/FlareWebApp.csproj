@@ -162,7 +162,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="FileLogic\AnalysisState.cs" />
-    <Compile Include="FileLogic\FileSaver.cs" />
+    <Compile Include="FileLogic\FileHandler.cs" />
+    <Compile Include="FileLogic\PersistentFileNamer.cs" />
     <Compile Include="FileLogic\WordFile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -200,6 +201,7 @@
     <Content Include="TestFiles\TestTextFile1.txt" />
     <Content Include="TestFiles\TestTextFile2.txt" />
     <Content Include="TestFiles\TestTextFile3.txt" />
+    <Content Include="TestFiles\TestTextFile4.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

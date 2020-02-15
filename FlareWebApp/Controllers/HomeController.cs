@@ -8,33 +8,28 @@ using FlareWebApp.FileLogic;
 
 namespace FlareWebApp.Controllers {
     public class HomeController : Controller {
+
+        //This is called when a user first loads the website or refreshes.
+        //Due to this, analyses states need to be reacquired from disk.
         public ActionResult Index() {
             HomePageModel model = new HomePageModel();
-            string savePath = HttpContext.Server.MapPath("~/SavedData");
-            model.AnalaysisStates = FileSaver.GetAnalysisStates(savePath);
+            string saveDir = HttpContext.Server.MapPath("~/SavedData");
+            FileHandler fileHandler = new FileHandler(saveDir);
+            model.AnalaysisStates = fileHandler.GetAnalysisStates();
             return View(model);
         }
 
-        public ActionResult About() {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact() {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
-
+        //This is called when a user submits a file.
+        //Analyses states are reacquired from disk, in order to account for the new analysis.
         [HttpPost]
         public ActionResult Submit(HomePageModel model) {
-            string savePath = HttpContext.Server.MapPath("~/SavedData");
+            string saveDir = HttpContext.Server.MapPath("~/SavedData");
             string stopwordPath = HttpContext.Server.MapPath("~/FileLogic/StopWords");
-            FileSaver fileSaver = new FileSaver(model.SomeFile, savePath, model.IncludeStopwords);
-            string filePathOriginal = fileSaver.GetFilePathOriginal();
+            FileHandler fileHandler = new FileHandler(model.SomeFile, saveDir, model.IncludeStopwords);
+            string filePathOriginal = fileHandler.GetFilePathOriginal();
             WordFile fileWithWords = new WordFile(filePathOriginal, stopwordPath, model.IncludeStopwords);
-            fileSaver.AppendPostProcessInfo(fileWithWords.GetMostFrequentWords(), model.IncludeStopwords);
-            model.AnalaysisStates = FileSaver.GetAnalysisStates(savePath);
+            fileHandler.AppendPostProcessInfo(fileWithWords.GetMostFrequentWords(), model.IncludeStopwords);
+            model.AnalaysisStates = fileHandler.GetAnalysisStates();
             return View("Index", model);
         }
     }
