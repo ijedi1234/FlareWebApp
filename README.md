@@ -4,7 +4,7 @@ This web application is written in C# ASP.Net using Visual Studio 2013. It provi
 1. This application can accept a text file from a client's computer and derive the word counts in the text file. Words within words are not counted.
 2. The 9 results before the most recent analysis are also provided alongside the most recent analysis. To clear these previous analyses, go to the FlareWebApp/SavedData folder and clear all files.
 3. The extensions of the words "talk", "play", "pass", and "copy" are all reduced to their stem forms before processing.
-4. Words are compared against a list of stopwords. If the user has decided to include stopwords, stopwords will be removed. These stopwords are retrived from disk. The stopwords were pulled from the list "Long Stopword List" at https://www.ranks.nl/stopwords
+4. Words are compared against a list of stopwords. If the user has decided to include stopwords, stopwords will be removed. These stopwords are retrieved from disk. The stopwords were pulled from the list "Long Stopword List" at https://www.ranks.nl/stopwords
 
 The libraries used to create this project are ASP.Net, MVC, Razor, and Bootstrap.
 
