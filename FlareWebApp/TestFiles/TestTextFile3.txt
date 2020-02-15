@@ -1,0 +1,4 @@
+﻿talk: talks, talking, talked
+play: plays, playing, played
+pass: passes, passing, passed
+copy: copies, copying, copied
